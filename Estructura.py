@@ -79,13 +79,12 @@
 
 
 
-
-
-
-
 #-------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------
-from geopy.distance import vincenty	#installar geopy, ejecutar desde la consola
+# -------------------------------------------------------------------------------------------
+
+
+# from math import radians, cos, sin, asin, sqrt #para la harvensine
+from geopy.distance import vincenty	#installar geopy, ejecutar desde la consola   tambien vale "great_circle"
 from datos_prueba import dicDatos
 from datos_prueba import dicBusq
 
@@ -107,11 +106,10 @@ def menuPrincipal():
 		print("hola")
 	#cuando cargo el grupo de persona predeterminado este se va a actualizar con "usuariosDeEstructura"
 	#llama a la funcion "datos_prueba.base_de_datos_de_prueba()",
-	# print(datos_prueba.base_de_datos_de_prueba())	#va a imprimir el diccionario entero, para probar vió.
+	# print(datos_prueba.base_de_datos_de_prueba())
 	elif OpcionesMenuPrincipal == '2':
 		crearUsuario()
 		filtrarBusquedas()
-	#llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a usuariosDeEstructura
 	elif OpcionesMenuPrincipal=='3':
 		print("as")
 		#llama a una funcion para que sirve para editar la info de una persona
@@ -168,12 +166,37 @@ def filtrarBusquedas():
 	pseu = str(input("Vuelva a ingresar su nombre de usuario:"))
 	sexoInteres=str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
 	sexoInt = definirSexoInt(sexoInteres)
-	edadMinima=input("Ingrese la edad mínima del rango de búsqueda:")
-	edadMaxima=input("Ingrese la edad máxima del rango de búsqueda:")
+	
+	edadMinima=int(input("Ingrese la edad mínima del rango de búsqueda:"))
+	# validarEdad(edadMinima)
+	edadMaxima=int(input("Ingrese la edad máxima del rango de búsqueda:"))
+	# validarEdad(edadMaxima)
+	
 	crearRango(edadMinima,edadMaxima)
 	
-	radioDeBusq=input("Ingrese un radio de busqueda en km: ")
-	dicBusq[pseu]={sexoInt,[rangoEdad], radioDeBusq}
+	radioDeBusq=int(input("Ingrese un radio de busqueda en km: "))
+	# dicBusq[pseu]={sexoInt,[rangoEdad], radioDeBusq}	#me parece que el enunciado era viejo, y no hacia falta ponerlo en un diccionario aparte
+	
+	funcionBusqueda()	#dados sexoInt,[rangoEdad], radioDeBusq compara con lo que está en dic_Datos
+
+	
+def validarEdad(edad):
+	if edad<18:
+		print("Debe tener por lo menos 18 años para registrarse")
+		menuPrincipal()
+	if edad>99:
+		print("Debe tener menos de 99 años para registrarse")
+		menuPrincipal()
+		
+		
+def definirSexoInt(sexoInteres):
+	if sexoInteres==("M" or "m"):
+		sexoInt = "M"
+	elif sexoInteres==("F" or "f"):
+		sexoInt = "F"
+	else:
+		sexoInt=["M","F"]
+	return sexoInt
 	
 	
 def crearUsuario():
@@ -216,14 +239,6 @@ def validarContraseña(contraseña):  #devuelve True o False
 # print(validarContraseña("hosdasg_9!"))
 		
 		
-def validarEdad(edad):
-	if edad<18:
-		print("Debe tener por lo menos 18 años para registrarse")
-		menuPrincipal()
-	if edad>99:
-		print("Debe tener menos de 99 años para registrarse")
-		menuPrincipal()
-		
 		
 def interesesEnListado(intereses):
 	interesesLista = intereses.split
@@ -231,24 +246,41 @@ def crearRango(edadMin,edadMax):
 	for x in range(edadMin,edadMax+1):
 		rangoEdad=[x]
 		return rangoEdad
-def definirSexoIn(sexoInteres):
-	if sexoInteres=="M":
-		sexoInt = "M"
-	elif sexoInteres=="F":
-		sexoInt = "F"
-	else:
-		sexoInt=["M","F"]
-	return sexoInt
 
+		
 	
+#usando Vicenty (necesita geopy)
 def distanciaEntreDos(distancia1, distancia2):
 #dadas dos distancias(variable que contiene una lista), devuelve la distancia en km
     return vincenty(distancia1, distancia2).km
-	
+
+
+'''
+#usando Harvensine https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r
+# print(haversine(2.12,31.11,32.1,21))
+'''
+
+
+def funcionBusqueda(sexoInteres, randoEdades, Ubicacion):
+	return "not yet"
+
 
 print(menuPrincipal())
-
-
 
 
 
