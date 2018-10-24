@@ -176,15 +176,17 @@ def validarPseudonimo(pseudonimo):  #devuelve True o False
 # print(any(i.isdigit() for i in "hla1")) #la funcion any, verifica si en cada iteracion al menos hay algo verdadero, si es asi devueve tru
 
 
-def validarContraseña(contraseña):
-    #revisa que la contraseña cumpla las condiciones
-    for letras in contraseña:
-        if letras not in (min or num or may):
-            print("Contraseña incorrecta, debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
-            contraseñaNueva=str(input("Ingrese otra contraseña: "))
-            validarContraseña(contraseñaNueva)
-        else:
-            print("Contraseña aceptada")
+def validarContraseña(contraseña):  #devuelve True o False
+#debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
+	if ((any(i.isdigit() for i in contraseña)==True) or (any(i == "_" for i in contraseña))==True or any(i.islower() for i in contraseña)==True or any(i.isupper() for i in contraseña)==True)==True and len(contraseña)>5:
+		return True
+	else:
+		return False
+	#nose porque pero si pongo un signo "!" me sigue tirando true
+		
+# print(validarContraseña("hosdasg_9!"))
+		
+		
 def validarEdad(edad):
     if edad<18:
         print("Debe tener por lo menos 18 años para registrarse")
