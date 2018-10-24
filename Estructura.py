@@ -120,7 +120,6 @@ def menuPrincipal():
 	else:
 		print("Por favor, ingrese una de las opciones")
 		menuPrincipal()	#vuelve al menu principal
-	return OpcionesMenuPrincipal
 
 
 
@@ -128,11 +127,15 @@ def ingresarSistema():
 	pseu=str(input("Ingrese su nombre de usuario:"))
 	if pseu in dicDatos.keys():
 		contraseña=(input("Ingrese su contraseña:"))
-		if contraseña in dicDatos[pseu]:
-			print("Bienvenide",dicDatos.values()[0])
+		if contraseña == dicDatos[pseu]["contraseña"]:
+			print("Bienvenide",dicDatos[pseu]["nombre"])
 			menuSecundario()
+		else:
+			print("Contraseña incorrecta")
+			ingresarSistema()
 	else:
 		print("Usuario inválido, volviendo al menu principal")
+		ingresarSistema()
 			
 			
 def menuSecundario():
@@ -169,7 +172,7 @@ def filtrarBusquedas():
 	edadMaxima=input("Ingrese la edad máxima del rango de búsqueda:")
 	crearRango(edadMinima,edadMaxima)
 	
-	radioDeBusq=input("Ingrese un radio de busqueda en km")
+	radioDeBusq=input("Ingrese un radio de busqueda en km: ")
 	dicBusq[pseu]={sexoInt,[rangoEdad], radioDeBusq}
 	
 	
