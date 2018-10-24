@@ -59,6 +59,7 @@ usuarios=list(dicDatos.keys())[0]	#ahi me refiero a juan
 sexo=dicDatos[usuarios]["sexo"]
 ubicacion=dicDatos[usuarios]["ubicacion"]
 edad=dicDatos[usuarios]["edad"]
+intereses=dicDatos[usuarios]["intereses"]
 print(edad)	#edad de juan
 '''
 
