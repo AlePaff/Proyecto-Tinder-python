@@ -1,27 +1,27 @@
-baseDeDatos={
-    "Juan89":[
-        "Juan",
-        "Rodriguez",
-        "juancitoR89",    #contraseña
-        "Hombre",
-        24,
-        41.40338,   #latitud
-        2.17403,    #longitud
-        ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"]
-    ],
-    "LaJuancita":[
-        "Juana",
-        "Perez",
-        "redsun9887",
-        "Mujer""",
-        21,
-        42.34567,
-        1.26785,
-        ["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"]
-    ],
+dicDatos={
+    "Juan89":{
+        nombre:"Juan",
+        apellido:"Rodriguez",
+        contraseña:"juancitoR89",    #contraseña
+        sexo:"Hombre",
+        edad:24,
+        ubicacion:[41.40338,2.123]
+        intereses:["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"]
+    },
+    "LaJuancita":{
+        nombre:"Juana",
+        apellido:"Perez",
+        contraseña:"redsun9887",
+        sexo:"Mujer""",
+        edad:21,
+        ubicacion:[42.34567, 23.123]
+        intereses:["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"]
+    },
 }
 
-print(baseDeDatos["LaJuancita"])
 
 
+dicBusq={
+	"Juan89":["mujer",[23,32],[41.2,32]]
+	}
 #si te da paja pensar buscá "lista de hobbies"
