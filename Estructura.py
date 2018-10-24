@@ -120,8 +120,9 @@ def menuPrincipal():
 		menuPrincipal()	#vuelve al menu principal
 
 
-
+pseu =""
 def ingresarSistema():
+	global pseu	#hace que se puede modificar globalmente el valor de psu, dentro de esta func
 	pseu=str(input("Ingrese su nombre de usuario:"))
 	if pseu in dicDatos.keys():
 		contraseña=(input("Ingrese su contraseña:"))
@@ -134,7 +135,10 @@ def ingresarSistema():
 	else:
 		print("Usuario inválido, volviendo al menu principal")
 		ingresarSistema()
-			
+
+def usuarioActual(user):
+	return user
+	
 			
 def menuSecundario():
 	opcionesMenuSecundario = input("""
@@ -163,7 +167,8 @@ def menuSecundario():
 			
 			
 def filtrarBusquedas():
-	pseu = str(input("Vuelva a ingresar su nombre de usuario:"))
+	global pseu #hace que se puede modificar el valor de pseu dentro de esta func
+	print("tu usuario es ", pseu)
 	sexoInteres=str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
 	sexoInt = definirSexoInt(sexoInteres)
 	
@@ -177,8 +182,8 @@ def filtrarBusquedas():
 	radioDeBusq=int(input("Ingrese un radio de busqueda en km: "))
 	# dicBusq[pseu]={sexoInt,[rangoEdad], radioDeBusq}	#me parece que el enunciado era viejo, y no hacia falta ponerlo en un diccionario aparte
 	
-	funcionBusqueda()	#dados sexoInt,[rangoEdad], radioDeBusq compara con lo que está en dic_Datos
-
+	funcionBusqueda()	#dados sexoInt,[rangoEdad], radioDeBusq compara con cada dato que esta en dic_Datos
+	#ejemplo de funcionBusqueda(["M","F"],[21,44],5]
 	
 def validarEdad(edad):
 	if edad<18:
