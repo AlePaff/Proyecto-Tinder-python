@@ -19,6 +19,34 @@ dicDatos={
         "ubicacion":[42.34567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
     },
+	"usuario1":{
+        "nombre":"usuario1",
+        "apellido":"usuario1",
+        "contraseña":"usuario1",
+        "sexo":"I",
+        "edad":32,
+        "ubicacion":[2.34567, 23.123],
+        "intereses":["star-wars", "asado", "bicicleta", "taekwondo","buenos-aires"],
+    },
+	"usuario2":{
+        "nombre":"usuario2",
+        "apellido":"usuario2",
+        "contraseña":"usuario2",
+        "sexo":"H",
+        "edad":55,
+        "ubicacion":[2.34567, 3.123],
+        "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
+    },
+	"usuario3":{
+        "nombre":"usuario3",
+        "apellido":"usuario3",
+        "contraseña":"usuario3",
+        "sexo":"M",
+        "edad":75,
+        "ubicacion":[2.4567, 3.123],
+        "intereses":["star-wars","buenos-aires"],
+    },
+	
 }
 
 
