@@ -97,68 +97,116 @@
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
 
-import datos_prueba
+from datos_prueba import dicDatos
+from datos_prueba import dicBusq
+min = "qwertyuiopasdfghjklñzxcvbnm"
+may="QWERTYUIOPASDFGHJKLÑZXCVBNM"
+num="1234567890"
+gb="_"
 
-#hay 2 diccionarios, el primero es el que está en datos_prueba.py, y el segundo es el que esta aca abajo
-usuariosDeEstructura={}	#en este diccionario se van a añadir los usuarios que se registren usando la opcion 2
 
-
-def menuPrincipal():
+ def menuPrincipal():
     OpcionesMenuPrincipal = input("""
     (1) CARGAR UN GRUPO DE PERSONAS PREDETERMINADO
-    (2) CARGAR UNA NUEVA PERSONA
+    (2) CREAR CUENTA NUEVA
     (3) (opcional) EDITAR INFORMACION DE UNA PERSONA
-    (4) INGREAR AL SISTEMA
+    (4) INGRESAR AL SISTEMA
+    Escriba el numero de opcion deseada: 
     """)
-
-    if OpcionesMenuPrincipal=="1":
+     if OpcionesMenuPrincipal=="1":
         print("hola")
     #cuando cargo el grupo de persona predeterminado este se va a actualizar con "usuariosDeEstructura"
     #llama a la funcion "datos_prueba.base_de_datos_de_prueba()",
     # print(datos_prueba.base_de_datos_de_prueba())	#va a imprimir el diccionario entero, para probar vió.
-
-
-    elif OpcionesMenuPrincipal == 2:
-        print("as")
+    elif OpcionesMenuPrincipal == '2':
+        crearUsuario()
+        filtrarBusquedas()
     #llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a usuariosDeEstructura
-
-    elif OpcionesMenuPrincipal==3:
+    elif OpcionesMenuPrincipal=='3':
         print("as")
         #llama a una funcion para que sirve para editar la info de una persona
-
-
-    elif OpcionesMenuPrincipal==4:
+    elif OpcionesMenuPrincipal=='4':
         ingresarSistema()
-
-
     else:
         print("Por favor, ingrese una de las opciones")
         menuPrincipal()	#vuelve al menu principal
-
     return OpcionesMenuPrincipal
 
 
-menuPrincipal()
+
+ def ingresarSistema():
+    pseu=str(input("Ingrese su nombre de usuario:"))
+    if pseu in dicDatos.keys():
+        contraseña=(input("Ingrese su contraseña:"))
+        if contraseña in dicDatos[pseu]:
+            print("Bienvenide",dicDatos.values()[0])
+ def filtrarBusquedas():
+    pseu = str(input("Vuelva a ingresar su nombre de usuario:"))
+    sexoInteres=str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
+    sexoInt = definirSexoInt(sexoInteres)
+    edadMinima=input("Ingrese la edad mínima del rango de búsqueda:")
+    edadMaxima=input("Ingrese la edad máxima del rango de búsqueda:")
+    crearRango(edadMinima,edadMaxima)
+    dicBusq[pseu]=[sexoInt,[rangoEdad]]
+ def crearUsuario():
+    pseu = str(input("Ingrese nombre de usuario: "))
+    validarPseudonimo(pseu)
+    contraseña = str(input("Ingrese contraseña: "))
+    validarContraseña(contraseña)
+    nombre = str(input("Ingrese su/s nombre/s: "))
+    apellido = str(input("Ingrese su/s apellido/s: "))
+    sexo = str(input("Sexo (M, F o I):"))
+    edad = int(input("Ingrese su edad: "))
+    validarEdad(edad)
+    intereses=str(input("Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte"))
+    interesesEnListado(intereses)
+    dicDatos[pseu]=[nombre,apellido,contraseña,sexo,edad,ubicacion,intereses]
+    filtrarBusquedas()
+    
+    
+def validarPseudonimo(pseudonimo):  #devuelve True o False
+    if any(letra.isupper() for letra in pseudonimo)==True:
+        return False
+    elif (any(i.isdigit() for i in pseudonimo)==True) or (any(i == "_" for i in pseudonimo))==True or any(i.isupper() for i in pseudonimo)==False:
+        #si hay un numero o un digito en pseudonimo
+        #EJEMPLO print (any (i == "_" for i in "pseudonimo"))  # devuelve True si hay algun guion bajo
+        return True #("hay almenos un numero o un guion bajo")
+    else:
+        return False
+# print(any(i.isdigit() for i in "hla1")) #la funcion any, verifica si en cada iteracion al menos hay algo verdadero, si es asi devueve tru
 
 
-
-
-
-
-#------------------------------------------------------------------
-
-# def ingresarSistema():
-# 	ingreseUsuario=input("Ingrese su nombre de usuario, y luego aprete ENTER")
-#
-
-
-
-
-
- # =input("""
- # (1) BUSCAR GENTE	(3) EDITAR
- # (2) MENSAJES		(4) SALIR DEL SISTEMA
- # """)
+def validarContraseña(contraseña):
+    #revisa que la contraseña cumpla las condiciones
+    for letras in contraseña:
+        if letras not in (min or num or may):
+            print("Contraseña incorrecta, debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
+            contraseñaNueva=str(input("Ingrese otra contraseña: "))
+            validarContraseña(contraseñaNueva)
+        else:
+            print("Contraseña aceptada")
+def validarEdad(edad):
+    if edad<18:
+        print("Debe tener por lo menos 18 años para registrarse")
+        menuPrincipal()
+    if edad>99:
+        print("Debe tener menos de 99 años para registrarse")
+        menuPrincipal()
+def interesesEnListado(intereses):
+    interesesLista = intereses.split
+def crearRango(edadMin,edadMax):
+    for x in range(edadMin,edadMax+1):
+        rangoEdad=[x]
+        return rangoEdad
+def definirSexoIn(sexoInteres):
+    if sexoInteres=="M":
+        sexoInt = "M"
+    elif sexoInteres=="F":
+        sexoInt = "F"
+    else:
+        sexoInt=["M","F"]
+    return sexoInt
+ print(menuPrincipal())
 
 
 
