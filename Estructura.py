@@ -85,9 +85,10 @@
 
 #-------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------
-
+from geopy.distance import vincenty	#installar geopy, ejecutar desde la consola
 from datos_prueba import dicDatos
 from datos_prueba import dicBusq
+
 min = "qwertyuiopasdfghjklñzxcvbnm"
 may="QWERTYUIOPASDFGHJKLÑZXCVBNM"
 num="1234567890"
@@ -130,8 +131,8 @@ def ingresarSistema():
 		if contraseña in dicDatos[pseu]:
 			print("Bienvenide",dicDatos.values()[0])
 			menuSecundario()
-		else:
-			print("Usuario inválido, volviendo al menu principal")
+	else:
+		print("Usuario inválido, volviendo al menu principal")
 			
 			
 def menuSecundario():
@@ -167,7 +168,11 @@ def filtrarBusquedas():
 	edadMinima=input("Ingrese la edad mínima del rango de búsqueda:")
 	edadMaxima=input("Ingrese la edad máxima del rango de búsqueda:")
 	crearRango(edadMinima,edadMaxima)
-	dicBusq[pseu]=[sexoInt,[rangoEdad]]
+	
+	radioDeBusq=input("Ingrese un radio de busqueda en km")
+	dicBusq[pseu]={sexoInt,[rangoEdad], radioDeBusq}
+	
+	
 def crearUsuario():
 	pseu = str(input("Ingrese nombre de usuario: "))
 	validarPseudonimo(pseu)
@@ -180,7 +185,7 @@ def crearUsuario():
 	validarEdad(edad)
 	intereses=str(input("Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte"))
 	interesesEnListado(intereses)
-	dicDatos[pseu]=[nombre,apellido,contraseña,sexo,edad,ubicacion,intereses]
+	dicDatos[pseu]=nombre,apellido,contraseña,sexo,edad,ubicacion,intereses
 	filtrarBusquedas()
 
 
@@ -215,6 +220,8 @@ def validarEdad(edad):
 	if edad>99:
 		print("Debe tener menos de 99 años para registrarse")
 		menuPrincipal()
+		
+		
 def interesesEnListado(intereses):
 	interesesLista = intereses.split
 def crearRango(edadMin,edadMax):
@@ -230,7 +237,15 @@ def definirSexoIn(sexoInteres):
 		sexoInt=["M","F"]
 	return sexoInt
 
+	
+def distanciaEntreDos(distancia1, distancia2):
+#dadas dos distancias(variable que contiene una lista), devuelve la distancia en km
+    return vincenty(distancia1, distancia2).km
+	
 
 print(menuPrincipal())
+
+
+
 
 
