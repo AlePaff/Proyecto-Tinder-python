@@ -1,14 +1,10 @@
 from datos_prueba import dicDatos
+from datos_prueba import diccionarioPrueba
 from datos_prueba import dicBusq
 # from math import radians, cos, sin, asin, sqrt  # para la harvensine
 from geopy.distance import vincenty  # instalar geopy, ejecutar desde la consola   tambien vale "great_circle"
 
-min = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ", "z", "x",
-	   "c", "v", "b", "n", "m"]
-may = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ", "Z", "X",
-	   "C", "V", "B", "N", "M"]
-num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-gb = "_"
+
 
 
 def menuPrincipal():
@@ -20,10 +16,8 @@ def menuPrincipal():
 	""")
 
 	if OpcionesMenuPrincipal == "1":
-		print ("hola")
-	# cuando cargo el grupo de persona predeterminado este se va a actualizar con "usuariosDeEstructura"
-	# llama a la funcion "datos_prueba.base_de_datos_de_prueba()",
-	# print(datos_prueba.base_de_datos_de_prueba())	#va a imprimir el diccionario entero, para probar vió.
+		dicDatos.update(diccionarioPrueba)
+		menuPrincipal()
 	elif OpcionesMenuPrincipal == '2':
 		crearUsuario ()
 	# llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a usuariosDeEstructura
@@ -62,7 +56,8 @@ def menuSecundario():
 	if opcionesMenuSecundario == "1":
 		filtrarBusquedas ()
 	elif opcionesMenuSecundario == "2":
-		print ("s")
+		mostrarMensajes()
+		menuSecundario()
 	# va a decir los mensajes que tiene, y luego borrarlos
 	elif opcionesMenuSecundario == "3":
 		print ("aun no")
@@ -74,19 +69,35 @@ def menuSecundario():
 		menuSecundario ()
 
 
+
+	
 def filtrarBusquedas():
 	ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
-
-	sexoInteres = str (input ("Ingrese el/los sexo/s de interes (M, F o A):"))
-	sexoInt = definirSexoInt (sexoInteres)
-
-	edadMinima = int (input ("Ingrese la edad mínima del rango de búsqueda:"))
-	edadMaxima = int (input ("Ingrese la edad máxima del rango de búsqueda:"))
-
+	
+	sexoInteres = str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
+	sexoInt = definirSexoInt(sexoInteres)
+	
+	edadMinima,edadMaxima=definirEdad()
+	validarEdad(edadMinima)
+	validarEdad(edadMaxima)
+	if (validarEdad(edadMaxima)==False) or (validarEdad(edadMinima)==False):
+		print("Por favor ingrese un rango de edad de entre 18 y 99 años.")
+		edadMinima, edadMaxima = definirEdad()
+	
 	# rangoEdad = crearRango (edadMinima, edadMaxima)
-	radioDeBusq = int (input ("Ingrese un radio de busqueda en km: "))
+	radioDeBusq = int(input("Ingrese un radio de busqueda en km: "))
 	# dicBusq[pseu]=[sexoInt,[rangoEdad]]
-	funcionBusqueda (sexoInt, [edadMinima, edadMaxima], radioDeBusq)
+	funcionBusqueda(sexoInt, [edadMinima, edadMaxima], radioDeBusq)
+	
+	
+def definirEdad():
+    edadMinima = int(input("Ingrese la edad mínima del rango de búsqueda:"))
+    edadMaxima = int(input("Ingrese la edad máxima del rango de búsqueda:"))
+    return edadMinima,edadMaxima
+
+	
+	
+	
 
 
 def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
@@ -105,7 +116,7 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 		ubicacion = dicDatos[listaUsers[numUser]]["ubicacion"]
 		edad = dicDatos[listaUsers[numUser]]["edad"]
 		intereses = dicDatos[listaUsers[numUser]]["intereses"]
-	
+		
 		if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
 			# si coincide con el sexo que buscaba                # si entra en el rango de edades
 			if distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion) <= radioBusqueda:
@@ -113,21 +124,46 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 	
 				porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
 				
-				print (listaUsers[numUser]," y tu tienen {} de coincidencia".format(porcentajeCoin))
-				eleccion=input ("""
+				print(listaUsers[numUser], " y tu tienen {} de coincidencia".format(porcentajeCoin))
+				
+				habilitacionMensaje=False
+				if pseu in dicDatos[listaUsers[numUser]]["likes"]:
+				#si el usuario actual esta en la lista de likes de la persona
+					habilitacionMensaje=True
+				
+				print("""
 				¿Que deseas hacer?
 				Dar Like(L)
 				Ignorar(I)
-				Salir(S)
-				""")
-				
+				Dejar un mensaje(M)
+				Salir(S)""")
+				eleccion=str(input())
+				'''
+				if eleccion=="L":
+					print("Le diste like a ", listaUsers[numUser])
+				elif eleccion=="I":
+					print("Ignorado, el siguiente usuario es..."
+				elif eleccion=="S":
+					print("saliendo...")
+					menuSecundario()
+				elif eleccion=="M":
+					if habilitacionMensaje=True:
+						mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
+						dicDatos[numUser]["mensajes"][pseu]=[mensaje]
+					else:
+						print("solo puedes dejar mensajes si la otra persona te likeo")
+				else:
+					print("elegiste mal, volviendo al menu")
+					menuSecundario()
+				'''
 				
 				
 		if len (sexoDeInteres) == 2:
 		# para el caso que busco H y M, osea si hay dos elementos en la lista
+			print(sexoDeInteres)
 			print ("xD")
 	
-	return "finish"
+	return
 
 '''
 def mostrarUsuarios(pseu):
@@ -141,6 +177,13 @@ def calcularPorcentaje(interes1,interes2):	#funcion que dadas dos listas, devuel
 	# calcularPorcentaje(["1s","2","3","4s","5","5"],["1d","2","3","4"])
 
 
+def mostrarMensajes():
+    if dicDatos[pseu]["mensajes"]:
+        print(dicDatos[pseu]["mensajes"])
+    else:
+        print("No tiene ningún mensaje.")
+		
+
 def definirSexoInt(sexoInteres):
 	if sexoInteres == ("M" or "m"):
 		return ["M"]
@@ -151,73 +194,80 @@ def definirSexoInt(sexoInteres):
 
 
 def crearUsuario():
-	pseu = str (input ("Ingrese nombre de usuario: "))
-	if pseu in list(dicDatos.keys ()):
-		print("Usuario ya existente, intente con uno diferente")
-		crearUsuario()
-	validarPseudonimo (pseu)
-	
-	contraseña = str (input ("Ingrese contraseña: "))
-	if validarContraseña (contraseña)==True:
-		nombre = str (input ("Ingrese su/s nombre/s: "))
-		apellido = str (input ("Ingrese su/s apellido/s: "))
-		sexo = (str (input ("Sexo (M, F o I):"))).upper ()
-		if sexo != "M" and sexo != "F" and sexo != "I":
-			print ("vuelva a ingresar los datos")
-			crearUsuario()
-			
-		edad = int (input ("Ingrese su edad: "))
-		validarEdad (edad)
-		
-		longitud = int(input("ingrese latitud: "))
-		latitud = int(input("ingrese longitud: "))
+    pseu = str(input("Ingrese nombre de usuario: "))
+    if pseu in list(dicDatos.keys()):
+        print("Usuario ya existente, intente con uno diferente")
+        crearUsuario()
+    validarPseudonimo(pseu)
+    contraseña = str(input("Ingrese contraseña: "))
+    validarContraseña(contraseña)
+    nombre = str(input("Ingrese su/s nombre/s: "))
+    apellido = str(input("Ingrese su/s apellido/s: "))
+    sexo = (str(input("Sexo (M, F o I):"))).upper()
+    if sexo != "M" and sexo != "F" and sexo != "I":
+        print("vuelva a ingresar los datos")
+        crearUsuario()
 
-		intereses = str (input ("Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte: "))
-		intereses=deTextoALista(intereses)
-		
-		dicLocal = {
-		pseu: {
-		"nombre":nombre,
-		"apellido":apellido,
-		"contraseña":contraseña,
-		"sexo": sexo,
-		"edad": edad,
-		"ubicacion": [longitud,latitud],
-		"intereses": intereses,
-		"mensajes":{}
-		}}
-		
-		dicDatos.update(dicLocal)	#mete el diccionario dicLocal, dentro de dicDatos
-		
-		print("Felicidades, ya es usuario de Tinder")
-		print(dicDatos[pseu])
-		menuPrincipal()
-	else:
-		print("vuelva a ingresar los datos")
-		crearUsuario()
+        edad = int(input("Ingrese su edad: "))
+        validarEdad(edad)
+        if validarEdad(edad)==False:
+            print("Debe tener entre 18 y 99 años para registrarse en el sistema.")
+            menuPrincipal()
+
+        longitud = int(input("ingrese latitud: "))
+        latitud = int(input("ingrese longitud: "))
+
+        intereses = str(input(
+            "Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte: "))
+        intereses = deTextoALista(intereses)
+
+        dicLocal = {
+            pseu: {
+                "nombre": nombre,
+                "apellido": apellido,
+                "contraseña": contraseña,
+                "sexo": sexo,
+                "edad": edad,
+                "ubicacion": [longitud, latitud],
+                "intereses": intereses,
+                "mensajes": {}
+            }}
+
+        dicDatos.update(dicLocal)  # mete el diccionario dicLocal, dentro de dicDatos
+
+        print("Felicidades, ya es usuario de Tinder")
+        print(dicDatos[pseu])
+        menuPrincipal()
+    else:
+        print("vuelva a ingresar los datos")
+        crearUsuario()
 
 
-def validarPseudonimo(pseudonimo):  # devuelve True o False
-	if any (letra.isupper () for letra in pseudonimo) == True:
-		return False
-	elif (any (i.isdigit () for i in pseudonimo) == True) or (any (i == "_" for i in pseudonimo)) == True or any (
-			i.isupper () for i in pseudonimo) == False:
-		# si hay un numero o un digito en pseudonimo
-		# EJEMPLO print (any (i == "_" for i in "pseudonimo"))  # devuelve True si hay algun guion bajo
-		return True  # ("hay almenos un numero o un guion bajo")
-	else:
-		return False
-
+def validarPseudonimo(pseudonimo):  
+    if any(letra.isupper() for letra in pseudonimo) == True:
+        print("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
+        pseu=str(input("Ingrese un nombre de usuario"))
+        validarPseudonimo(pseu)
+    elif (any(i.isdigit() for i in pseudonimo) == True) or (any(i == "_" for i in pseudonimo)) == True or any(
+            i.isupper() for i in pseudonimo) == False:
+        # si hay un numero o un digito en pseudonimo
+        # EJEMPLO print (any (i == "_" for i in "pseudonimo"))  # devuelve True si hay algun guion bajo
+        return True  # ("hay almenos un numero o un guion bajo")
+    else:
+        print("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
+        pseu = str(input("Ingrese un nombre de usuario"))
+        validarPseudonimo(pseu)
 
 def validarContraseña(contraseña):  # devuelve True o False
-	# debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
-	if ((any (i.isdigit () for i in contraseña) == True) or (any (i == "_" for i in contraseña)) == True or any (
-			i.islower () for i in contraseña) == True or any (
-		i.isupper () for i in contraseña) == True) == True and len (
-		contraseña) > 5:
-		return True
-	else:
-		return False
+    # debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
+    if ((any(i.isdigit() for i in contraseña) == True) and (any(i == "_" for i in contraseña)) == True and any(
+            i.islower() for i in contraseña) == True and any(i.isupper() for i in contraseña) == True) == True and len(contraseña) > 5:
+        return True
+    else:
+        print("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
+        contraseña = str(input("Ingrese una contraseña: "))
+        validarContraseña(contraseña)
+
 
 
 # nose porque pero si pongo un signo "!" me sigue tirando true
@@ -234,11 +284,6 @@ def validarEdad(edad):
 def deTextoALista(texto):
 	return texto.split(" ")
 
-
-def crearRango(edadMin, edadMax):
-	for x in range (edadMin, edadMax + 1):
-		rangoEdad = [x]
-		return rangoEdad
 
 
 # usando Vicenty (necesita geopy)
