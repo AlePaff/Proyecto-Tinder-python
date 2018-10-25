@@ -57,9 +57,62 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	
+	    "jhon": {
+        "nombre": "Jhon",
+        "apellido": "Rodrigues",
+        "contraseña": "jhon",  # contraseña
+        "sexo": "F",
+        "edad": 67,
+        "ubicacion": [21.40338, 1.123],
+        "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
+        "likes": [],
+        "mensajes": {},
+    },
+    "":{
+        "nombre":"Juana",
+        "apellido":"Perez",
+        "contraseña":"redsun9887",
+        "sexo":"F",
+        "edad":21,
+        "ubicacion":[42.94567, 23.123],
+        "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
+    },
+	"usuario4":{
+        "nombre":"usuario1",
+        "apellido":"usuario1",
+        "contraseña":"usuario1",
+        "sexo":"I",
+        "edad":32,
+        "ubicacion":[22.34567, 23.123],
+        "intereses":["star-wars", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
+    },
+	"usuario22":{
+        "nombre":"usuario22",
+        "apellido":"usuario22",
+        "contraseña":"usuario22",
+        "sexo":"M",
+        "edad":98,
+        "ubicacion":[23.34567, 3.123],
+        "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
+    },
+	"usuario":{
+        "nombre":"usuario",
+        "apellido":"usuario",
+        "contraseña":"usuario",
+        "sexo":"F",
+        "edad":36,
+        "ubicacion":[2.4567, 4.123],
+        "intereses":["star-wars","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
+    },
 }
 
-dicBusq={}
 
 
