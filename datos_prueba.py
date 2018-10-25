@@ -1,4 +1,7 @@
-dicDatos={
+dicDatos={}
+
+diccionarioPrueba={
+	
     "juan": {
         "nombre": "Juan",
         "apellido": "Rodriguez",
@@ -7,8 +10,8 @@ dicDatos={
         "edad": 24,
         "ubicacion": [41.40338, 2.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
-        "likes": {},
-        "mensajes": {"lasd": 2},
+        "likes": [],
+        "mensajes": {"user":"mensajexasdasd"},
     },
     "LaJuancita":{
         "nombre":"Juana",
@@ -18,6 +21,8 @@ dicDatos={
         "edad":21,
         "ubicacion":[42.34567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
     },
 	"usuario1":{
         "nombre":"usuario1",
@@ -27,6 +32,8 @@ dicDatos={
         "edad":32,
         "ubicacion":[2.34567, 23.123],
         "intereses":["star-wars", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
     },
 	"usuario2":{
         "nombre":"usuario2",
@@ -36,6 +43,8 @@ dicDatos={
         "edad":55,
         "ubicacion":[2.34567, 3.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
     },
 	"usuario3":{
         "nombre":"usuario3",
@@ -45,6 +54,8 @@ dicDatos={
         "edad":75,
         "ubicacion":[2.4567, 3.123],
         "intereses":["star-wars","buenos-aires"],
+		"likes": [],
+        "mensajes": {},
     },
 	
 }
