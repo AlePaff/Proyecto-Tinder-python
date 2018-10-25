@@ -76,7 +76,7 @@ def filtrarBusquedas():
 	
 	sexoInteres = str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
 	sexoInt = definirSexoInt(sexoInteres)
-	
+	print(sexoInt)
 	edadMinima,edadMaxima=definirEdad()
 	validarEdad(edadMinima)
 	validarEdad(edadMaxima)
@@ -106,74 +106,76 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 	ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
 	interesesUsuarioLogueado = dicDatos[pseu]["intereses"]
 	
-	
-	
 	for numUser in range (len (listaUsers)):
 		# va a repetirse las veces como numero de usuario haya
-	
 		# va a recorrer la lista de usuarios, las variables de aca abajo cambian en cada iteracion
 		sexo = dicDatos[listaUsers[numUser]]["sexo"]
 		ubicacion = dicDatos[listaUsers[numUser]]["ubicacion"]
 		edad = dicDatos[listaUsers[numUser]]["edad"]
 		intereses = dicDatos[listaUsers[numUser]]["intereses"]
 		
-		if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
-			# si coincide con el sexo que buscaba                # si entra en el rango de edades
-			if distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion) <= radioBusqueda:
-				# si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
-	
-				porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
-				
-				print(listaUsers[numUser], " y tu tienen {} de coincidencia".format(porcentajeCoin))
-				
-				habilitacionMensaje=False
-				if pseu in dicDatos[listaUsers[numUser]]["likes"]:
-				#si el usuario actual esta en la lista de likes de la persona
-					habilitacionMensaje=True
-				
-				print("""
-				¿Que deseas hacer?
-				Dar Like(L)
-				Ignorar(I)
-				Dejar un mensaje(M)
-				Salir(S)""")
-				eleccion=str(input())
-				'''
-				if eleccion=="L":
-					print("Le diste like a ", listaUsers[numUser])
-				elif eleccion=="I":
-					print("Ignorado, el siguiente usuario es..."
-				elif eleccion=="S":
-					print("saliendo...")
-					menuSecundario()
-				elif eleccion=="M":
-					if habilitacionMensaje=True:
-						mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
-						dicDatos[numUser]["mensajes"][pseu]=[mensaje]
-					else:
-						print("solo puedes dejar mensajes si la otra persona te likeo")
+		if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad) and ((distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda):
+			# si coincide con el sexo que buscaba                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
+			porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
+			
+			print(listaUsers[numUser], " y tu tienen {} de coincidencia".format(porcentajeCoin))
+			
+			habilitacionMensaje=False
+			if pseu in dicDatos[listaUsers[numUser]]["likes"]:
+			#si el usuario actual esta en la lista de likes de la persona
+				habilitacionMensaje=True
+			
+			print("""
+			¿Que deseas hacer?
+			Dar Like(L)
+			Ignorar(I)
+			Dejar un mensaje(M)
+			Salir(S)""")
+			eleccion=str(input())
+			
+			if eleccion=="L" or eleccion=="l":
+				print("Le diste like a ", listaUsers[numUser])
+				listaUsers.remove (listaUsers[numUser])
+				print(listaUsers)
+				funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda)
+			elif eleccion=="I":
+				print("Ignorado, el siguiente usuario es...")
+			elif eleccion=="S":
+				print("saliendo...")
+				menuSecundario()
+			elif eleccion=="M":
+				if habilitacionMensaje==True:
+					mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
+					dicDatos[numUser]["mensajes"][pseu]=[mensaje]
 				else:
-					print("elegiste mal, volviendo al menu")
-					menuSecundario()
-				'''
+					print("solo puedes dejar mensajes si la otra persona te likeo")
+			else:
+				print("elegiste mal, volviendo al menu")
+				menuSecundario()
+			
 				
 				
 		if len (sexoDeInteres) == 2:
 		# para el caso que busco H y M, osea si hay dos elementos en la lista
 			print(sexoDeInteres)
 			print ("xD")
+		else:
+			print("se termino la busqueda")
+			menuSecundario()
 	
 	return
 
-'''
-def mostrarUsuarios(pseu):
-for usuario in dicDatos.keys():
-	if (dicDatos[usuario][3] in dicBusq[pseu][0]) and (dicDatos[usuario][4] in dicBusq[pseu][1]):
-		print(dicDatos.keys())
-'''
 
-def calcularPorcentaje(interes1,interes2):	#funcion que dadas dos listas, devuelve el porcentaje de coincidencia entre ambas
-    return
+
+def calcularPorcentaje(interes1,interes2):# funcion que dadas dos listas, devuelve el porcentaje de coincidencia entre ambas
+   listaUsers = list(dicDatos.keys())
+   listaUsers.remove(pseu)
+   for users in range(len(listaUsers)):
+       interes1=dicDatos[users]["intereses"]
+       interes2=dicDatos[pseu]["intereses"]
+       interesesEnComun=len(interes1 in interes2)
+       porcentaje= interesesEnComun*100/interes2
+       return porcentaje,"%"
 	# calcularPorcentaje(["1s","2","3","4s","5","5"],["1d","2","3","4"])
 
 
@@ -185,13 +187,19 @@ def mostrarMensajes():
 		
 
 def definirSexoInt(sexoInteres):
-	if sexoInteres == ("M" or "m"):
-		return ["M"]
-	elif sexoInteres == ("F" or "f"):
-		return ["F"]
-	else:
-		return ["M", "F"]
-
+    if sexoInteres == "M" or sexoInteres=="m":
+        sexoInt = ["M"]
+    elif sexoInteres == "F" or sexoInteres=="f":
+        sexoInt = ["F"]
+    elif sexoInteres=="A" or sexoInteres=="a":
+        sexoInt = ["M", "F"]
+    else:
+        print("Por favor ingrese una de las opciones: sexo masculino ('M'), sexo femenino ('F') o ambos ('A')")
+        sexoInteres=input("Ingrese el sexo de interes: ")
+        definirSexoInt(sexoInteres)
+        sexoInt=""
+    return sexoInt
+    
 
 def crearUsuario():
     pseu = str(input("Ingrese nombre de usuario: "))
