@@ -1,6 +1,6 @@
 from datos_prueba import dicDatos
 from datos_prueba import diccionarioPrueba
-from datos_prueba import dicBusq
+from math import floor
 # from math import radians, cos, sin, asin, sqrt  # para la harvensine
 from geopy.distance import vincenty  # instalar geopy, ejecutar desde la consola   tambien vale "great_circle"
 
@@ -84,9 +84,7 @@ def filtrarBusquedas():
 		print("Por favor ingrese un rango de edad de entre 18 y 99 años.")
 		edadMinima, edadMaxima = definirEdad()
 	
-	# rangoEdad = crearRango (edadMinima, edadMaxima)
 	radioDeBusq = int(input("Ingrese un radio de busqueda en km: "))
-	# dicBusq[pseu]=[sexoInt,[rangoEdad]]
 	funcionBusqueda(sexoInt, [edadMinima, edadMaxima], radioDeBusq)
 	
 	
@@ -114,44 +112,44 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 		edad = dicDatos[listaUsers[numUser]]["edad"]
 		intereses = dicDatos[listaUsers[numUser]]["intereses"]
 		
-		if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad) and ((distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda):
-			# si coincide con el sexo que buscaba                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
-			porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
-			
-			print(listaUsers[numUser], " y tu tienen {} de coincidencia".format(porcentajeCoin))
-			
-			habilitacionMensaje=False
-			if pseu in dicDatos[listaUsers[numUser]]["likes"]:
-			#si el usuario actual esta en la lista de likes de la persona
-				habilitacionMensaje=True
-			
-			print("""
-			¿Que deseas hacer?
-			Dar Like(L)
-			Ignorar(I)
-			Dejar un mensaje(M)
-			Salir(S)""")
-			eleccion=str(input())
-			
-			if eleccion=="L" or eleccion=="l":
-				print("Le diste like a ", listaUsers[numUser])
-				listaUsers.remove (listaUsers[numUser])
-				print(listaUsers)
-				funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda)
-			elif eleccion=="I":
-				print("Ignorado, el siguiente usuario es...")
-			elif eleccion=="S":
-				print("saliendo...")
-				menuSecundario()
-			elif eleccion=="M":
-				if habilitacionMensaje==True:
-					mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
-					dicDatos[numUser]["mensajes"][pseu]=[mensaje]
+		if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
+			if  (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:
+				# si coincide con el sexo que buscaba                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
+				porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
+				
+				print(listaUsers[numUser], " y tu tienen {} de coincidencia".format(porcentajeCoin))
+				
+				habilitacionMensaje=False
+				if pseu in dicDatos[listaUsers[numUser]]["likes"]:
+				#si el usuario actual esta en la lista de likes de la persona
+					habilitacionMensaje=True
+				
+				print("""
+				¿Que deseas hacer?
+				Dar Like(L)
+				Ignorar(I)
+				Dejar un mensaje(M)
+				Salir(S)""")
+				eleccion=str(input())
+				
+				if eleccion=="L" or eleccion=="l":
+					print("Le diste like a ", listaUsers[numUser])
+					listaUsers.remove (listaUsers[numUser])
+					print(listaUsers)
+				elif eleccion=="I":
+					print("Ignorado, el siguiente usuario es...")
+				elif eleccion=="S":
+					print("saliendo...")
+					menuSecundario()
+				elif eleccion=="M":
+					if habilitacionMensaje==True:
+						mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
+						dicDatos[numUser]["mensajes"][pseu]=[mensaje]
+					else:
+						print("solo puedes dejar mensajes si la otra persona te likeo")
 				else:
-					print("solo puedes dejar mensajes si la otra persona te likeo")
-			else:
-				print("elegiste mal, volviendo al menu")
-				menuSecundario()
+					print("elegiste mal, volviendo al menu")
+					menuSecundario()
 			
 				
 				
@@ -168,15 +166,12 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 
 
 def calcularPorcentaje(interes1,interes2):# funcion que dadas dos listas, devuelve el porcentaje de coincidencia entre ambas
-   listaUsers = list(dicDatos.keys())
-   listaUsers.remove(pseu)
-   for users in range(len(listaUsers)):
-       interes1=dicDatos[users]["intereses"]
-       interes2=dicDatos[pseu]["intereses"]
-       interesesEnComun=len(interes1 in interes2)
-       porcentaje= interesesEnComun*100/interes2
-       return porcentaje,"%"
-	# calcularPorcentaje(["1s","2","3","4s","5","5"],["1d","2","3","4"])
+    acum=0
+    for ciclo in interes1:
+        if ciclo in interes2:
+            acum+=1
+    return floor(((100 * acum) / (len(interes1)+len(interes2))))
+
 
 
 def mostrarMensajes():
@@ -203,32 +198,25 @@ def definirSexoInt(sexoInteres):
 
 def crearUsuario():
     pseu = str(input("Ingrese nombre de usuario: "))
-    if pseu in list(dicDatos.keys()):
-        print("Usuario ya existente, intente con uno diferente")
-        crearUsuario()
-    validarPseudonimo(pseu)
-    contraseña = str(input("Ingrese contraseña: "))
-    validarContraseña(contraseña)
-    nombre = str(input("Ingrese su/s nombre/s: "))
-    apellido = str(input("Ingrese su/s apellido/s: "))
-    sexo = (str(input("Sexo (M, F o I):"))).upper()
-    if sexo != "M" and sexo != "F" and sexo != "I":
-        print("vuelva a ingresar los datos")
-        crearUsuario()
-
+    if pseu not in list(dicDatos.keys()):
+        validarPseudonimo(pseu)
+        contraseña = str(input("Ingrese contraseña: "))
+        validarContraseña(contraseña)
+        nombre = str(input("Ingrese su/s nombre/s: "))
+        apellido = str(input("Ingrese su/s apellido/s: "))
+        sexo = (str(input("Sexo (M, F o I):"))).upper()
+        if sexo != "M" and sexo != "F" and sexo != "I":
+            print("vuelva a ingresar los datos")
+            crearUsuario()
         edad = int(input("Ingrese su edad: "))
         validarEdad(edad)
         if validarEdad(edad)==False:
             print("Debe tener entre 18 y 99 años para registrarse en el sistema.")
             menuPrincipal()
-
         longitud = int(input("ingrese latitud: "))
         latitud = int(input("ingrese longitud: "))
-
-        intereses = str(input(
-            "Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte: "))
+        intereses = str(input("Ingrese separados por espacios y guiones hobbies, intereses, etc. Ej.: 'green-day gatos viajar museos-de-arte: "))
         intereses = deTextoALista(intereses)
-
         dicLocal = {
             pseu: {
                 "nombre": nombre,
@@ -240,14 +228,11 @@ def crearUsuario():
                 "intereses": intereses,
                 "mensajes": {}
             }}
-
         dicDatos.update(dicLocal)  # mete el diccionario dicLocal, dentro de dicDatos
-
         print("Felicidades, ya es usuario de Tinder")
-        print(dicDatos[pseu])
         menuPrincipal()
     else:
-        print("vuelva a ingresar los datos")
+        print("Usuario ya existente, intente con uno diferente")
         crearUsuario()
 
 
@@ -268,8 +253,7 @@ def validarPseudonimo(pseudonimo):
 
 def validarContraseña(contraseña):  # devuelve True o False
     # debe contener al menos una minúscula, una masyucula, un número y 5 caracteres")
-    if ((any(i.isdigit() for i in contraseña) == True) and (any(i == "_" for i in contraseña)) == True and any(
-            i.islower() for i in contraseña) == True and any(i.isupper() for i in contraseña) == True) == True and len(contraseña) > 5:
+    if ((any(i.isdigit() for i in contraseña) == True) and (any(i == "_" for i in contraseña)) == True and any(i.islower() for i in contraseña) == True and any(i.isupper() for i in contraseña) == True) == True and len(contraseña) > 5:
         return True
     else:
         print("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
