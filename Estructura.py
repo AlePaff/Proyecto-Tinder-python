@@ -6,175 +6,187 @@ from geopy.distance import vincenty  # instalar geopy, ejecutar desde la consola
 
 
 
+pseu = ""  # se la define globalmente, para despues usarla en las distintas funciones
+listaUsers = [] #es una lista de usuarios global, la cual se actualiza con las claves de los diccionarios, cuando se carga el grupo de persona predeterminado
+
 
 def menuPrincipal():
-	OpcionesMenuPrincipal = input ("""
-	(1) CARGAR UN GRUPO DE PERSONAS PREDETERMINADO
-	(2) CREAR CUENTA NUEVA
-	(3) INGRESAR AL SISTEMA
-	Escriba el numero de opcion deseada: 
-	""")
+    global listaUsers
+    OpcionesMenuPrincipal = input ("""
+    (1) CARGAR UN GRUPO DE PERSONAS PREDETERMINADO
+    (2) CREAR CUENTA NUEVA
+    (3) INGRESAR AL SISTEMA
+    Escriba el numero de opcion deseada: 
+    """)
 
-	if OpcionesMenuPrincipal == "1":
-		dicDatos.update(diccionarioPrueba)
-		#print ("\n" * 100) una manera de limpiar la pantalla
-		menuPrincipal()
-	elif OpcionesMenuPrincipal == '2':
-		crearUsuario ()
-	# llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a usuariosDeEstructura
-	elif OpcionesMenuPrincipal == '3':
-		ingresarSistema ()
-	else:
-		print ("Por favor, ingrese una de las opciones")
-		menuPrincipal ()  # vuelve al menu principal
+    if OpcionesMenuPrincipal == "1":
+        dicDatos.update(diccionarioPrueba)
+        #print ("\n" * 100) una manera de limpiar la pantalla
+        listaUsers = list(dicDatos.keys ())
+        menuPrincipal()
+    elif OpcionesMenuPrincipal == '2':
+        crearUsuario ()
+    # llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a usuariosDeEstructura
+    elif OpcionesMenuPrincipal == '3':
+        ingresarSistema ()
+    else:
+        print ("Por favor, ingrese una de las opciones")
+        menuPrincipal ()  # vuelve al menu principal
 
 
-		
-pseu = ""  # se la define globalmente, para despues usarla en las distintas funciones
+       
+
+
 def ingresarSistema():
-	global pseu  # hace que se pueda modificar globalmente el valor de pseu, dentro de esta func
-	pseu = str (input ("Ingrese su nombre de usuario:"))
-	if pseu in dicDatos.keys ():
-		contraseña = (input ("Ingrese su contraseña:"))
-		if contraseña == dicDatos[pseu]["contraseña"]:
-			print ("Bienvenide", dicDatos[pseu]["nombre"])
-			menuSecundario ()
-		else:
-			print ("Contraseña incorrecta")
-			menuSecundario ()
-	else:
-		print ("Usuario inválido, volviendo al menu principal")
-		menuPrincipal ()
+    global pseu  # hace que se pueda modificar globalmente el valor de pseu, dentro de esta func
+    pseu = str (input ("Ingrese su nombre de usuario:"))
+    if pseu in dicDatos.keys ():
+        contraseña = (input ("Ingrese su contraseña:"))
+        if contraseña == dicDatos[pseu]["contraseña"]:
+            print ("Bienvenide", dicDatos[pseu]["nombre"])
+            menuSecundario ()
+        else:
+            print ("Contraseña incorrecta")
+            menuPrincipal()
+    else:
+        print ("Usuario inválido, volviendo al menu principal")
+        menuPrincipal ()
 
 
 def menuSecundario():
-	opcionesMenuSecundario = input ("""
-	(1) BUSCAR GENTE
-	(2) MENSAJES
-	(3) EDITAR
-	(4) SALIR DEL SISTEMA	
-	""")
-	if opcionesMenuSecundario == "1":
-		filtrarBusquedas ()
-	elif opcionesMenuSecundario == "2":
-		mostrarMensajes()
-		menuSecundario()
-	elif opcionesMenuSecundario == "3":
-		print ("aun no")
-		menuSecundario()
-	elif opcionesMenuSecundario == "4":
-		print ("Adios")
-		menuPrincipal ()
-	else:
-		print ("Por favor, ingrese una de las opciones")
-		menuSecundario ()
+    opcionesMenuSecundario = input ("""
+    (1) BUSCAR GENTE
+    (2) MENSAJES
+    (3) EDITAR
+    (4) SALIR DEL SISTEMA   
+    """)
+    if opcionesMenuSecundario == "1":
+        filtrarBusquedas ()
+    elif opcionesMenuSecundario == "2":
+        mostrarMensajes()
+        menuSecundario()
+    elif opcionesMenuSecundario == "3":
+        print ("Funcion aun sin terminar")
+        menuSecundario()
+    elif opcionesMenuSecundario == "4":
+        print ("Adios, gracias por visitar Tinder")
+        menuPrincipal ()
+    else:
+        print ("Por favor, ingrese una de las opciones")
+        menuSecundario ()
 
 
 
-	
+    
 def filtrarBusquedas():
-	ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
-	
-	sexoInteres = str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
-	sexoInt = definirSexoInt(sexoInteres)
-	edadMinima,edadMaxima=definirEdad()
-	validarEdad(edadMinima)
-	validarEdad(edadMaxima)
-	if (validarEdad(edadMaxima)==False) or (validarEdad(edadMinima)==False):
-		print("Por favor ingrese un rango de edad de entre 18 y 99 años.")
-		edadMinima, edadMaxima = definirEdad()
-	
-	radioDeBusq = int(input("Ingrese un radio de busqueda en km: "))
-	funcionBusqueda(sexoInt, [edadMinima, edadMaxima], radioDeBusq)
-	
-def definirEdad():
+    ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
+    
+    sexoInteres = str(input("Ingrese el/los sexo/s de interes (M, F o A):"))
+    sexoInt = definirSexoInt(sexoInteres)
+
     edadMinima = int(input("Ingrese la edad mínima del rango de búsqueda:"))
     edadMaxima = int(input("Ingrese la edad máxima del rango de búsqueda:"))
-    return edadMinima,edadMaxima
+    
+    if (validarEdad(edadMaxima)==False) or (validarEdad(edadMinima)==False):
+        print("Por favor ingrese un rango de edad de entre 18 y 99 años.")
+        filtrarBusquedas()
+    
+    radioDeBusq = int(input("Ingrese un radio de busqueda en km: "))
+    funcionBusqueda(sexoInt, [edadMinima, edadMaxima], radioDeBusq)
 
-	
-	
-
-listaUsers = list(dicDatos.keys ())
-
+    
 def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
-	global listaUsers
-	print(listaUsers)
-	listaUsers.remove (pseu)  # elimina de la lista de usuarios, el usuario logueado
-	ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
-	interesesUsuarioLogueado = dicDatos[pseu]["intereses"]
-	longitudLista=len(listaUsers)
-	
-	while len(listaUsers)!=0:
-		for numUser in range (len(listaUsers[:])):
-			# va a repetirse las veces como numero de usuario haya
-			# va a recorrer la lista de usuarios, las variables de aca abajo cambian en cada iteracion
-			sexo = dicDatos[listaUsers[numUser]]["sexo"]
-			ubicacion = dicDatos[listaUsers[numUser]]["ubicacion"]
-			edad = dicDatos[listaUsers[numUser]]["edad"]
-			intereses = dicDatos[listaUsers[numUser]]["intereses"]
-			
-			if ((sexo == sexoDeInteres[0]) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
-				print(distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion))
-				if  (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:
-					# si coincide con el sexo que buscaba                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
-					porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
-					
-					print(listaUsers[numUser], " y tu tienen {} % de coincidencia".format(porcentajeCoin))
-					
-					habilitacionMensaje=False
-					if pseu in dicDatos[listaUsers[numUser]]["likes"]:
-					#si el usuario actual esta en la lista de likes de la persona
-						habilitacionMensaje=True
-
-					print("""
-					¿Que deseas hacer?
-					Dar Like(L)
-					Ignorar(I)
-					Dejar un mensaje(M)
-					Salir(S)""")
-					eleccion=str(input())
-					
-					if eleccion=="L" or eleccion=="l":
-						print("Le diste like a ", listaUsers[numUser])
-						listaUsers.remove(listaUsers[numUser])
-						
-					elif eleccion=="I" or eleccion=="i":
-						print("Ignorado, el siguiente usuario es...")
-						listaUsers.remove(listaUsers[numUser])
-						
-					elif eleccion=="S" or eleccion=="s":
-						print("saliendo...")
-						return menuSecundario()
-						
-					elif eleccion=="M" or eleccion=="m":
-						if habilitacionMensaje==True:
-							mensaje=str(input("Deja un mensaje a ", listaUsers[numUser],": "))
-							dicDatos[numUser]["mensajes"][pseu]=[mensaje]
-							listaUsers.remove(listaUsers[numUser])
-						else:
-							print("solo puedes dejar mensajes si la otra persona te likeo")
-					else:
-						print("elegiste mal, salteando busqueda")
-						listaUsers.remove(listaUsers[numUser])
-				
-					
-					
-			if len(sexoDeInteres) == 2:
-			# para el caso que busco H y M, osea si hay dos elementos en la lista
-				
-				
-				
-				
-				
-				
-		else:
-			print("se termino la busqueda")
-			menuSecundario()
-		menuSecundario()
-	return
+    global listaUsers
+    if pseu in listaUsers:  #si el usuario esta en la lista
+        listaUsers.remove(pseu)  # elimina de la lista de usuarios, el usuario logueado
+    ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
+    interesesUsuarioLogueado = dicDatos[pseu]["intereses"]
+    
+    #recorre la longitud de LA COPIA, de la lista de usuarios
+    for numUser in range (len(listaUsers[:])):
+        # va a repetirse las veces como numero de usuario haya y va a recorrer la lista de usuarios, las variables de aca abajo cambian en cada iteracion
+        
+        sexo = dicDatos[listaUsers[numUser]]["sexo"]    #en dicDatos, listaUsers[numUser] es un string, osea un pseudonimo en este caso
+        ubicacion = dicDatos[listaUsers[numUser]]["ubicacion"]
+        edad = dicDatos[listaUsers[numUser]]["edad"]
+        intereses = dicDatos[listaUsers[numUser]]["intereses"]
+        #por ejemplo listaUsers[numUser] es 
+        
+        
+        #si la longitud de la lista es 1 (es decir, que solamente eligiò F o M) o el sexo del usuario buscado es Indeterminado
+        if ((len(sexoDeInteres) == 1) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
+            if (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:
+                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
+                
+                porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
+                print(listaUsers[numUser], " y tu tienen {} % de coincidencia".format(porcentajeCoin))
+                eleccionUsuario = input ("""
+                ¿Que deseas hacer?
+                Dar Like(L)
+                Salir(S) 
+                Ignorar(Cualquier Tecla)
+                """)
+                opcionesBusqueda(eleccionUsuario, numUser)
+                
+                
+        # para el caso que busco H y M, osea si hay dos elementos en la lista
+        if ((len(sexoDeInteres) == 2) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
+            if  (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:
+                # si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
+                
+                porcentajeCoin=calcularPorcentaje(interesesUsuarioLogueado,intereses)
+                print(listaUsers[numUser], " y tu tienen {} % de coincidencia".format(porcentajeCoin))
+                eleccionUsuario = input ("""
+                ¿Que deseas hacer?
+                Dar Like(L)
+                Salir(S) 
+                Ignorar(Cualquier Tecla)
+                """)
+                opcionesBusqueda(eleccionUsuario, numUser)
+            
+            
+        else:                        
+            print ("La busqueda ha finalizado.")
+            menuSecundario()
+    return
 
 
+#dados el numero de usuario y la eleccion...
+def opcionesBusqueda(laEleccion, numeroDeUser):
+    global listaUsers   #hace posible la modificacion de esta lista, dentro de esta funcion
+    if laEleccion=="L" or laEleccion=="l":
+        if pseu in dicDatos[listaUsers[numeroDeUser]]["likes"]:#si el usuario actual esta en la lista de likes de la persona
+            eleccion=input("Quieres dejarle un mensaje a {} ?  (S/N)").format(listaUsers[numeroDeUser])
+            if eleccion=="S":
+                mensaje=str(input("Deja un mensaje a ", listaUsers[numeroDeUser],": "))
+                dicDatos[numeroDeUser]["mensajes"][pseu]=[mensaje]
+                listaUsers.remove(listaUsers[numeroDeUser]) #de la lista elimina al usuario actual de la busqueda
+                return
+            else:   #si su eleccion fue N
+                listaUsers.remove(listaUsers[numeroDeUser])
+                return
+        else:   #si no està en la lista de likes
+            print(listaUsers)
+            listaUsers.remove(listaUsers[numeroDeUser])
+            return "Le diste like"                    
+                    
+                    
+    elif laEleccion=="S" or laEleccion=="s":  #si puso salir, vuelve al menu de inicio
+        menuSecundario()
+        
+    else:   #si el usuario apreta cualquier tecla, osea si lo ignora
+        listaUsers.remove(listaUsers[numeroDeUser])
+        return
+    
+        
+        
+        
+        
+        
+        
+    
+    
+    
 
 def calcularPorcentaje(interes1,interes2):# funcion que dadas dos listas, devuelve el porcentaje de coincidencia entre ambas
     acum=0
@@ -190,7 +202,7 @@ def mostrarMensajes():
         print("tienes un mensaje de: ", dicDatos[pseu]["mensajes"])
     else:
         print("No tiene ningún mensaje.")
-		
+        
 
 def definirSexoInt(sexoInteres):
     if sexoInteres == "M" or sexoInteres=="m":
@@ -276,41 +288,39 @@ def validarContraseña(contraseña):  # devuelve True o False
 # nose porque pero si pongo un signo "!" me sigue tirando true
 # print(validarContraseña("hosdasg_9!"))
 def validarEdad(edad):
-	if edad < 18:
-		print ("Debe tener por lo menos 18 años para registrarse")
-		menuPrincipal ()
-	if edad > 99:
-		print ("Debe tener menos de 99 años para registrarse")
-		menuPrincipal ()
+    if edad <= 18 or edad >99:
+        return False
+    else:
+        return True
 
 
 def deTextoALista(texto):
-	return texto.split(" ")
+    return texto.split(" ")
 
 
 
 # usando Vicenty (necesita geopy)
 def distanciaEntreDos(distancia1, distancia2):
-	# dadas dos distancias(variable que contiene una lista), devuelve la distancia en km
-	return vincenty (distancia1, distancia2).km
+    # dadas dos distancias(variable que contiene una lista), devuelve la distancia en km
+    return vincenty (distancia1, distancia2).km
 
 
 '''
 #usando Harvensine https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
 def haversine(lon1, lat1, lon2, lat2):
-	"""
-	Calculate the great circle distance between two points 
-	on the earth (specified in decimal degrees)
-	"""
-	# convert decimal degrees to radians 
-	lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-	# haversine formula 
-	dlon = lon2 - lon1 
-	dlat = lat2 - lat1 
-	a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-	c = 2 * asin(sqrt(a)) 
-	r = 6371 # Radius of earth in kilometers. Use 3956 for miles
-	return c * r
+    """
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r
 # print(haversine(2.12,31.11,32.1,21))
 '''
 
