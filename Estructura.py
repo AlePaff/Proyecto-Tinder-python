@@ -95,7 +95,7 @@ def funcionBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
     ubicacionUsuarioLogueado = dicDatos[pseu]["ubicacion"]
     interesesUsuarioLogueado = dicDatos[pseu]["intereses"]
 
-    # recorre la longitud de LA COPIA, de la lista de usuarios
+    # recorre la longitud de LA COPIA de la lista de usuarios, para evitar el problema de out of range
     for numUser in range (len (listaUsers[:])):
         # va a repetirse las veces como numero de usuario haya y va a recorrer la lista de usuarios
         # las variables de aca abajo cambian en cada iteracion
@@ -252,8 +252,14 @@ def validarContraseña(contraseña):
     # EJEMPLO print (any (i == "_" for i in "pseudonimo"))  # devuelve True si hay algun guion bajo
     # EJEMPLO islower(), verifica si un caracter es minuscula
 
-    if (len (contraseña) > 5) and any (i.isdigit () for i in contraseña) and (any (i.isupper () for i in contraseña) and any (i.islower () for i in contraseña)):
-        return True
+
+    if (any (i in "!#$%&/()=?¡¿[]+-{}" for i in contraseña)):   #si hay alguno de esos caracteres, entonces pide ingresar de nuevo
+        print ("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
+        contraseña = str (input ("Ingrese una contraseña: "))
+        validarContraseña (contraseña)
+
+    elif (len (contraseña) > 5) and any (i.isdigit () for i in contraseña) and (any (i.isupper () for i in contraseña) and any (i.islower () for i in contraseña)):
+        return
 
     else:
         print ("Contraseña invalida, por favor ingrese una contraseña que contenga por lo menos una minúscula, un número, una mayúscula y 5 caracteres")
@@ -267,12 +273,12 @@ def validarContraseña(contraseña):
 def validarPseudonimo(pseudonimo):
     if any(i.isupper () for i in pseudonimo):
         print ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
-        pseu = str (input ("Ingrese un nombre de usuario"))
+        pseu = str (input ("Ingrese un nombre de usuario: "))
         validarPseudonimo (pseu)
 
     elif (any (i in "!#$%&/()=?¡¿[]+-{}" for i in pseudonimo)):
         print ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
-        pseu = str (input ("Ingrese un nombre de usuario"))
+        pseu = str (input ("Ingrese un nombre de usuario: "))
         validarPseudonimo (pseu)
 
     elif (any (i.isdigit () for i in pseudonimo)) or (any (i == "_" for i in pseudonimo)) or any (letra.islower () for letra in pseudonimo):
@@ -281,7 +287,7 @@ def validarPseudonimo(pseudonimo):
 
     else:
         print ("Usuario invalido, por favor ingrese un usuario que contenga únicamente minúsculas, números o guión bajo.")
-        pseu = str (input ("Ingrese un nombre de usuario"))
+        pseu = str (input ("Ingrese un nombre de usuario: "))
         validarPseudonimo (pseu)
 
 
