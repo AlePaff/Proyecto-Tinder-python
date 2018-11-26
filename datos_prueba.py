@@ -1,17 +1,21 @@
-dicDatos={}
+datos={}
+
+ejecucionActual={"pseu":"",	#va a contener el nombre del usuario que esté activo en el sistema
+	"listaUsers":[]
+	}
 
 diccionarioPrueba={
 	
-    "juan": {
+    "asd": {
         "nombre": "Juan",
         "apellido": "Rodriguez",
-        "contraseña": "juancito",  # contraseña
+        "contraseña": "asd",  # contraseña
         "sexo": "M",
         "edad": 24,
         "ubicacion": [41.40338, 2.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
         "likes": [],
-        "mensajes": {"user":"mensajexasdasd"},
+        "mensajes": {"ind":"soy un mesaje","LaJuancita":"hola te deje un emensaje"},
     },
     "LaJuancita":{
         "nombre":"Juana",
@@ -21,10 +25,10 @@ diccionarioPrueba={
         "edad":21,
         "ubicacion":[42.34567, 23.123],
         "intereses":["star-wars", "nueva-york", "fotografia", "francia", "asado", "bicicleta", "taekwondo","buenos-aires"],
-		"likes": [],
+		"likes": ["asd"],
         "mensajes": {},
     },
-	"usuario1":{
+	"indeterminado":{
         "nombre":"usuario1",
         "apellido":"usuario1",
         "contraseña":"usuario1",
@@ -35,7 +39,7 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"usuario2":{
+	"masculino":{
         "nombre":"usuario2",
         "apellido":"usuario2",
         "contraseña":"usuario2",
@@ -46,7 +50,7 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"usuario3":{
+	"fem":{
         "nombre":"usuario3",
         "apellido":"usuario3",
         "contraseña":"usuario3",
@@ -54,24 +58,24 @@ diccionarioPrueba={
         "edad":75,
         "ubicacion":[2.4567, 3.123],
         "intereses":["star-wars","buenos-aires"],
-		"likes": [],
+		"likes": ["asd"],
         "mensajes": {},
     },
-	    "jhon": {
+	"jhon": {
         "nombre": "Jhon",
         "apellido": "Rodrigues",
         "contraseña": "jhon",  # contraseña
-        "sexo": "F",
+        "sexo": "M",
         "edad": 67,
         "ubicacion": [21.40338, 1.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
         "likes": [],
         "mensajes": {},
     },
-    "":{
+    "unaUsuaria":{
         "nombre":"Juana",
         "apellido":"Perez",
-        "contraseña":"redsun9887",
+        "contraseña":"unaUsuaria",
         "sexo":"F",
         "edad":21,
         "ubicacion":[42.94567, 23.123],
@@ -79,7 +83,7 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"usuario4":{
+	"ind":{
         "nombre":"usuario1",
         "apellido":"usuario1",
         "contraseña":"usuario1",
@@ -90,7 +94,7 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"usuario22":{
+	"mascu":{
         "nombre":"usuario22",
         "apellido":"usuario22",
         "contraseña":"usuario22",
@@ -101,7 +105,7 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"usuario":{
+	"fem":{
         "nombre":"usuario",
         "apellido":"usuario",
         "contraseña":"usuario",
@@ -113,5 +117,6 @@ diccionarioPrueba={
         "mensajes": {},
     },
 }
+
 
 
