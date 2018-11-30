@@ -15,12 +15,12 @@ diccionarioPrueba={
         "ubicacion": [41.40338, 2.123],
         "intereses": ["tenis", "nadar", "pokemon", "anime", "escribir", "pintar", "taekwondo"],
         "likes": [],
-        "mensajes": {"ind":"soy un mesaje","LaJuancita":"hola te deje un emensaje"},
+        "mensajes": {"algunUsuario":"soy un mesaje","juanita":"hola te deje un emensaje"},
     },
-    "LaJuancita":{
+    "juanita":{
         "nombre":"Juana",
         "apellido":"Perez",
-        "contraseña":"redsun9887",
+        "contraseña":"juanita",
         "sexo":"F",
         "edad":21,
         "ubicacion":[42.34567, 23.123],
@@ -28,8 +28,8 @@ diccionarioPrueba={
 		"likes": ["asd"],
         "mensajes": {},
     },
-	"indeterminado":{
-        "nombre":"usuario1",
+	"usuario1":{
+        "nombre":"usuario1 (ind)",
         "apellido":"usuario1",
         "contraseña":"usuario1",
         "sexo":"I",
@@ -39,8 +39,8 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"masculino":{
-        "nombre":"usuario2",
+	"usuario2":{
+        "nombre":"usuario2 (masc)",
         "apellido":"usuario2",
         "contraseña":"usuario2",
         "sexo":"M",
@@ -50,8 +50,8 @@ diccionarioPrueba={
 		"likes": [],
         "mensajes": {},
     },
-	"fem":{
-        "nombre":"usuario3",
+	"usuario3":{
+        "nombre":"usuario3 (fem)",
         "apellido":"usuario3",
         "contraseña":"usuario3",
         "sexo":"F",
