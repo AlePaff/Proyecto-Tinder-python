@@ -130,7 +130,7 @@ def hacerBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 		
 		# para el caso que busco H y M, osea si hay dos elementos en la lista "sexoDeInteres"
 		if ((len (sexoDeInteres)) == 2 or (sexo == "I")):
-			#puede que la condicion de validarEdad y distanciaEntreDos esté duplicada, pero es mejor eso, que hacer otra funcion y pasarle un monton de parametros
+			
 			if (rangoEdades[0] <= edad and rangoEdades[1] >= edad) and ((distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda):
 			
 				porcentajeCoin = calcularPorcentaje (interesesUsuarioLogueado, intereses)
@@ -165,8 +165,7 @@ def hacerBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 	ejecucionActual["listaUsers"]=copiaListaUsers
 	return print ("La busqueda ha finalizado.")
 
-
-	
+#NOTA: puede que la condicion de validarEdad y distanciaEntreDos esté duplicada, pero es mejor eso, que hacer otra funcion y pasarle un monton de parametros
 	
 
 	
