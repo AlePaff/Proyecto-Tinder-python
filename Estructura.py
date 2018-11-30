@@ -51,10 +51,8 @@ def ingresarSistema():
 			menuSecundario ()
 		else:
 			print ("Contraseña incorrecta")
-			return
 	else:
 		print ("Usuario inválido, volviendo al menu principal")
-		return
 
 
 def menuSecundario():
@@ -222,11 +220,12 @@ def calcularPorcentaje(interes1, interes2):	 # funcion que dadas dos listas, dev
 
 def mostrarMensajes():#hacer un while que vaya mostrando todos los mensajes que tiene el usuario
 	if datos[ejecucionActual["pseu"]]["mensajes"]:
-		print ("tienes un mensaje de: ", datos[ejecucionActual["pseu"]]["mensajes"])
-		return
+		for mensajitos in range(len(list(datos[ejecucionActual["pseu"]]["mensajes"].values()))):
+			print ("tienes un mensaje de: ", list(datos[ejecucionActual["pseu"]]["mensajes"].keys())[mensajitos])
+			print ("tienes un mensaje de: ", list(datos[ejecucionActual["pseu"]]["mensajes"].values())[mensajitos])
 	else:
 		print ("No tiene ningún mensaje.")
-		return
+
 
 
 def definirSexoInt(sexoInteres):
@@ -248,8 +247,8 @@ def crearUsuario():
 	nombreDeUsuario = str (input ("Ingrese un nombre de usuario: "))
 	
 	
-	
-	if validarPseudonimo (nombreDeUsuario)==False:	#en caso de que ingreso 5 veces mal el nombre de usuario, ej: si las 5 veces puso mayusculas. Ejemplo de implementacion
+	#Ejemplo de implementacion
+	if validarPseudonimo (nombreDeUsuario)==False:	#en caso de que ingreso 5 veces mal el nombre de usuario, ej: si las 5 veces puso mayusculas. 
 		return print("Demasiados intentos")
 	
 	#si ingreso un nombre de usuario valido, entonce continua
@@ -296,6 +295,7 @@ def crearUsuario():
 			"edad": edad,
 			"ubicacion": [longitud, latitud],
 			"intereses": intereses,
+			"likes":[]
 			"mensajes": {}
 		}}
 	ejecucionActual["listaUsers"].append(nombreDeUsuario)	#mete al usuario que se acaba de registrar en la lista ejecucionActual["listaUsers"]
@@ -347,10 +347,7 @@ def validarPseudonimo(pseudonimo):
 	
 
 def validarEdad(edad):
-	if edad < 18 or edad > 99:
-		return False
-	else:
-		return True
+	return 18 <= edad <= 99
 
 
 
@@ -361,5 +358,19 @@ def distanciaEntreDos(distancia1, distancia2):
 	return vincenty (distancia1, distancia2).km
 
 
+	
+	
+	
 
-menuPrincipal ()
+	
+
+'''
+#SUPER SISTEMA ANTI EXPLOSIONES
+try: 
+	menuPrincipal ()
+except:
+	print("\n\nHubo un error durante la ejecucion\nCerrando el programa")
+'''
+
+menuPrincipal()
+
