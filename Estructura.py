@@ -113,13 +113,10 @@ def hacerBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 	if ejecucionActual["pseu"] in ejecucionActual["listaUsers"]:	#el if, es por si hizo una segunda busqueda
 		ejecucionActual["listaUsers"].remove(ejecucionActual["pseu"])  # elimina de la lista de usuarios, el usuario logueado (para que no aparezca él mismo en la busqueda)
 		
-		
 	ubicacionUsuarioLogueado = datos[ejecucionActual["pseu"]]["ubicacion"]
 	interesesUsuarioLogueado = datos[ejecucionActual["pseu"]]["intereses"]
 	
 	
-
-
 	# recorre la longitud de LA COPIA de la lista de usuarios, para evitar el problema de out of range
 	for numUser in range (len(ejecucionActual["listaUsers"])):
 		# va a repetirse las veces como numero de usuario haya y va a recorrer la lista de usuarios
@@ -132,56 +129,59 @@ def hacerBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 		
 		
 		# para el caso que busco H y M, osea si hay dos elementos en la lista "sexoDeInteres"
-		if ((len (sexoDeInteres)) == 2 or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
-			if (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:	#no esta puesto en el if de arriba para que no esté con tantas condiciones juntas, y sea ILEGIBLE
-				# si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
-
+		if ((len (sexoDeInteres)) == 2 or (sexo == "I")):
+			#puede que la condicion de validarEdad y distanciaEntreDos esté duplicada, pero es mejor eso, que hacer otra funcion y pasarle un monton de parametros
+			if (rangoEdades[0] <= edad and rangoEdades[1] >= edad) and ((distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda):
+			
 				porcentajeCoin = calcularPorcentaje (interesesUsuarioLogueado, intereses)
 				print (ejecucionActual["listaUsers"][numUser], " y tu tienen {} % de coincidencia".format (porcentajeCoin))
-				eleccionUsuario = input ("""
-	¿Que deseas hacer?
-	Dar Like(L)
-	Salir(S) 
-	Ignorar(Cualquier Tecla)
-	""")
-	
-				if (opcionesBusqueda (eleccionUsuario, numUser))=="S":	# si puso salir, vuelve al menu de inicio
-					ejecucionActual["listaUsers"]=copiaListaUsers	#vuelve a dejar la lista de usuarios como estaba originalmente
-					return
 
-
-		#si el primer elemento (ya sea M o F) es igual al sexo de la persona que está siendo buscada, OR esta ultima tiene sexo inderterminado
-		elif ((sexoDeInteres[0]==sexo) or (sexo == "I")) and (rangoEdades[0] <= edad and rangoEdades[1] >= edad):
-			if (distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda:
-				# si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
-
-				porcentajeCoin = calcularPorcentaje (interesesUsuarioLogueado, intereses)
-				print (ejecucionActual["listaUsers"][numUser], " y tu tienen {} % de coincidencia".format (porcentajeCoin))
-				eleccionUsuario = input ("""
-	¿Que deseas hacer?
-	Dar Like(L)
-	Salir(S) 
-	Ignorar(Cualquier Tecla)
-	""")
-				if (opcionesBusqueda (eleccionUsuario, numUser))=="S":	# si puso salir, vuelve al menu de inicio
+				
+				#llama a la funcion opcionesBusqueda
+				if (opcionesBusqueda (numUser))=="S":	# si puso salir, vuelve al menu de inicio
 					ejecucionActual["listaUsers"]=copiaListaUsers
 					return
 					
+
+		#si el primer elemento (ya sea M o F) es igual al sexo de la persona que está siendo buscada, OR esta ultima tiene sexo inderterminado
+		elif ((sexoDeInteres[0]==sexo) or (sexo == "I")):
+			if (rangoEdades[0] <= edad and rangoEdades[1] >= edad) and ((distanciaEntreDos (ubicacionUsuarioLogueado, ubicacion)) <= radioBusqueda):
+				# si entra en el rango de edades # si la distancia entre los dos es menor a la especificado por el usuario, osea radioBusqueda
+
+				porcentajeCoin = calcularPorcentaje (interesesUsuarioLogueado, intereses)
+				print (ejecucionActual["listaUsers"][numUser], " y tu tienen {} % de coincidencia".format (porcentajeCoin))
+
+				
+				#llama a la funcion opcionesBusqueda
+				if (opcionesBusqueda (numUser))=="S":	# si puso salir, vuelve al menu de inicio
+					ejecucionActual["listaUsers"]=copiaListaUsers
+					return
 					
-	#igualmente, si no cumple ninguna de las condiciones, se "elimina" de la lista de gente a buscar
+	
 		else:
-			ejecucionActual["listaUsers"][numUser]=""
+			ejecucionActual["listaUsers"][numUser]=""	#igualmente, si no cumple ninguna de las condiciones, se "elimina" de la lista de gente a buscar
 	
 	
 	ejecucionActual["listaUsers"]=copiaListaUsers
 	return print ("La busqueda ha finalizado.")
 
 
-# dados el numero de usuario y la eleccion...
-def opcionesBusqueda(laEleccion, numeroDeUser):
-	if laEleccion.upper() == "L":
-		
 	
+	
+
+	
+
+# dados el numero de usuario y la eleccion...
+def opcionesBusqueda(numeroDeUser):
+
+	eleccionUsuario = input ("""
+	¿Que deseas hacer?
+	Dar Like(L)
+	Salir(S) 
+	Ignorar(Cualquier Tecla)
+	""")
+
+	if eleccionUsuario.upper() == "L":
 		if ejecucionActual["listaUsers"][numeroDeUser] in datos[ejecucionActual["pseu"]]["likes"]:	#si la persona está en la lista de likes del usuario logueado
 			eleccion = input ("El Usuario {} te likeó, ¿quieres dejarle un mensaje? (S/N)").format (ejecucionActual["listaUsers"][numeroDeUser])
 			if eleccion.upper() == "S":
@@ -189,7 +189,6 @@ def opcionesBusqueda(laEleccion, numeroDeUser):
 				usuarioYMensaje={ejecucionActual["pseu"]:mensaje}	#crea un diccionario, que tiene como clave el usuario actual, y valor el mensaje que le dejó el usuario
 				datos[ejecucionActual["listaUsers"][numeroDeUser]]["mensajes"].update(usuarioYMensaje)	#actualiza el diccionario "mensajes" del usuario que está siendo buscado, es decir, al cual se le dejó el mensaje
 				ejecucionActual["listaUsers"][numeroDeUser]=""	# de la lista "elimina" al usuario actual de la busqueda
-				return
 				
 			else:  # si su eleccion fue N
 				ejecucionActual["listaUsers"][numeroDeUser]=""
@@ -200,12 +199,11 @@ def opcionesBusqueda(laEleccion, numeroDeUser):
 			ejecucionActual["listaUsers"][numeroDeUser]=""
 			return print("Le diste like")
 
-	elif laEleccion.upper() == "S":
+	elif eleccionUsuario.upper() == "S":
 		return "S"
 
 	else:  # si el usuario apreta cualquier tecla, osea si lo ignora
 		ejecucionActual["listaUsers"][numeroDeUser]=""
-		return
 
 		
 		
