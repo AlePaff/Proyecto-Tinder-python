@@ -295,7 +295,7 @@ def crearUsuario():
 			"edad": edad,
 			"ubicacion": [longitud, latitud],
 			"intereses": intereses,
-			"likes":[]
+			"likes":[],
 			"mensajes": {}
 		}}
 	ejecucionActual["listaUsers"].append(nombreDeUsuario)	#mete al usuario que se acaba de registrar en la lista ejecucionActual["listaUsers"]
