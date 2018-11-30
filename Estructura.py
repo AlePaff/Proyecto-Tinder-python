@@ -93,8 +93,8 @@ def filtrarBusquedas():
 	edadMinima = int (input ("Ingrese la edad mínima del rango de búsqueda:"))
 	edadMaxima = int (input ("Ingrese la edad máxima del rango de búsqueda:"))
 	
-	
-	while ((validarEdad(edadMaxima) == False) or (validarEdad (edadMinima) == False)):
+	#entra en este while si, el usuario no ingresa en un rango de edades valido, o si la edad minima es mayor o igual que la maxima
+	while ((validarEdad(edadMaxima) == False) or (validarEdad (edadMinima) == False)) or (edadMinima>=edadMaxima):
 		print ("Por favor ingrese un rango de edad de entre 18 y 99 años.")
 		edadMinima = int (input ("Ingrese la edad mínima del rango de búsqueda:"))
 		edadMaxima = int (input ("Ingrese la edad máxima del rango de búsqueda:"))
