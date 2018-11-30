@@ -180,9 +180,10 @@ def hacerBusqueda(sexoDeInteres, rangoEdades, radioBusqueda):
 # dados el numero de usuario y la eleccion...
 def opcionesBusqueda(laEleccion, numeroDeUser):
 	if laEleccion.upper() == "L":
+		
 	
-		if ejecucionActual["pseu"] in datos[ejecucionActual["listaUsers"][numeroDeUser]]["likes"]:	# si el usuario logueado esta en la lista de likes de la persona
-			eleccion = input ("Dhe Usuario {} te likeó, ¿quieres dejarle un mensaje? (S/N)").format (ejecucionActual["listaUsers"][numeroDeUser])
+		if ejecucionActual["listaUsers"][numeroDeUser] in datos[ejecucionActual["pseu"]]["likes"]:	#si la persona está en la lista de likes del usuario logueado
+			eleccion = input ("El Usuario {} te likeó, ¿quieres dejarle un mensaje? (S/N)").format (ejecucionActual["listaUsers"][numeroDeUser])
 			if eleccion.upper() == "S":
 				mensaje = str (input ("Dejale un mensaje: "))
 				usuarioYMensaje={ejecucionActual["pseu"]:mensaje}	#crea un diccionario, que tiene como clave el usuario actual, y valor el mensaje que le dejó el usuario
@@ -192,10 +193,11 @@ def opcionesBusqueda(laEleccion, numeroDeUser):
 				
 			else:  # si su eleccion fue N
 				ejecucionActual["listaUsers"][numeroDeUser]=""
-				return
+				return print("No le dejaste ningun mensaje")
 		else:  # si no està en la lista de likes
+			datos[ejecucionActual["listaUsers"][numeroDeUser]]["likes"].append(ejecucionActual["pseu"])	#añade a la lista de likes de la persona, al usuario actual
+					
 			ejecucionActual["listaUsers"][numeroDeUser]=""
-			
 			return print("Le diste like")
 
 	elif laEleccion.upper() == "S":
@@ -217,12 +219,13 @@ def calcularPorcentaje(interes1, interes2):	 # funcion que dadas dos listas, dev
 			acum += 1
 	return floor (((100 * acum) / (len (interes1) + len (interes2))))
 
+	
 
 def mostrarMensajes():#hacer un while que vaya mostrando todos los mensajes que tiene el usuario
 	if datos[ejecucionActual["pseu"]]["mensajes"]:
 		for mensajitos in range(len(list(datos[ejecucionActual["pseu"]]["mensajes"].values()))):
-			print ("tienes un mensaje de: ", list(datos[ejecucionActual["pseu"]]["mensajes"].keys())[mensajitos])
-			print ("tienes un mensaje de: ", list(datos[ejecucionActual["pseu"]]["mensajes"].values())[mensajitos])
+			print ("\ntienes un mensaje de: ", list(datos[ejecucionActual["pseu"]]["mensajes"].keys())[mensajitos])
+			print ("'",list(datos[ejecucionActual["pseu"]]["mensajes"].values())[mensajitos],"'")
 	else:
 		print ("No tiene ningún mensaje.")
 
