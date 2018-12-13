@@ -1,38 +1,45 @@
-from datos_prueba import datos
-from datos_prueba import diccionarioPrueba
-from datos_prueba import ejecucionActual
+# from archivoMerge import datos
+# from archivoMerge import ejecucionActual
 from math import floor
 # from math import radians, cos, sin, asin, sqrt  # para la harvensine
 from geopy.distance import vincenty  # instalar geopy, ejecutar desde la consola   tambien funciona con "great_circle"
+from pickle import dump, load
 
 
-pseu = ""  # se la define globalmente, para despues usarla en las distintas funciones
-listaUsers = []  # es una lista de usuarios global, la cual se actualiza con las claves de los diccionarios, cuando se carga el grupo de persona predeterminado
 
 
 # print ("\n" * 100) una manera de limpiar la pantalla
 
+
 def menuPrincipal():
     opcionesMenuPrincipal = ""  #inicializa la variable
     
-    while opcionesMenuPrincipal!="4":
+    while opcionesMenuPrincipal!="5":
         opcionesMenuPrincipal = input ("""
-(1) CARGAR UN GRUPO DE PERSONAS PREDETERMINADO
+(1) IMPRIMIR USUARIOS REGISTRADOS
 (2) CREAR CUENTA NUEVA
 (3) INGRESAR AL SISTEMA
-(4) CERRAR PROGRAMA
+(4) IMPRIMIR TOP5 USUARIOS
+(5) CERRAR PROGRAMA
 Escriba el numero de opcion deseada: 
 """)
         if opcionesMenuPrincipal == "1":
-            datos.update (diccionarioPrueba)    #va a añadir diccionarioPrueba al diccionario "datos", si hay valores iguales, los va a actualizar
-            ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
+            #imprime el diccionario de forma ordenada, recordar: los diccionarios no almacenan los valores de forma ordenada
+            pass
             
         elif opcionesMenuPrincipal == "2":
             crearUsuario () # llama una func, la cual sirve para cargar datos, y esto aladirlos al diccionario principal, osea a "datos"
             
         elif opcionesMenuPrincipal == "3":
             ingresarSistema ()
-        elif opcionesMenuPrincipal=="4":    #se pone esta opciones porque sino, iría directo al else, y saldria del programa, pero mostrrando el cartel "por favor ingrese una...."
+        elif opcionesMenuPrincipal=="4":
+            #imprime el diccionario por la cantidad de likes que tengan los usuarios
+            
+            #recorre el diccionario solo una vez y va tomando la cantidad de likes que tenga cada uno de los usuarios
+            #y los va almacenando los valores en una lista, (con un while, que su condicion esque la lista solo tenga una longitud de 5)
+            #finalmente imprime la lista completa, es decir el top 5 usuarios
+            pass
+        elif opcionesMenuPrincipal=="5":
             return
         else:
             print ("Por favor, ingrese una de las opciones")
@@ -47,7 +54,7 @@ def ingresarSistema():
     if ejecucionActual["pseu"] in ejecucionActual["listaUsers"]:
         contraseña = input ("Ingrese su contraseña: ")
         if contraseña == datos[ejecucionActual["pseu"]]["contraseña"]:
-            print ("Bienvenide a Tinder", datos[ejecucionActual["pseu"]]["nombre"])
+            print ("Hola ", datos[ejecucionActual["pseu"]]["nombre"])
             menuSecundario ()
         else:
             print ("Contraseña incorrecta")
@@ -277,8 +284,13 @@ def crearUsuario():
             "likes":[],
             "mensajes": {}
         }}
-    ejecucionActual["listaUsers"].append(nombreDeUsuario)   #mete al usuario que se acaba de registrar en la lista ejecucionActual["listaUsers"]
-    datos.update (datosDelUsuario)   # mete el diccionario datosDelUsuario, dentro de datos
+        
+    #------ guarda los datos en el archivo pickle
+    with open(r"nuevosUsuario.pkl","wb") as registrarNuevoUsuario:
+        dump(datosDelUsuario,registrarNuevoUsuario)
+    
+    ejecucionActual["listaUsers"].append(nombreDeUsuario)   #mete al usuario que se acaba de registrar, en la lista ejecucionActual["listaUsers"]
+    datos.update (datosDelUsuario)   # mete el diccionario "datosDelUsuario", dentro de "datos"
     
     return print ("Felicidades, ya es usuario de Tinder")
 
@@ -366,7 +378,25 @@ def verificarSexo():
         sexo = (str (input ("Sexo (seleccione M, F o I): "))).upper ()
     return sexo
     
-    
+   
+
+   
+def mergePickleCsv(archivoPickle, archivoCsv):   #recibe un archivo en formato csv y uno en formato pickle y devuelve un diccionario, de ambos
+	
+while True:
+    try:
+        usuarios=load(archivoPickle)
+        print(var,"\n")
+    except EOFError:
+        break
+archivoPickle.close()
+    var=load(archivoPickle)
+	
+	
+	
+
+
+
 
     
 
@@ -378,5 +408,34 @@ except:
     print("\n\nHubo un error durante la ejecucion\nCerrando el programa")
 '''
 
+
+#--------BLOQUE PRINCIPAL----------
+
+datos={}    #diccionario donde se almacenan todos los usuarios
+
+ejecucionActual={
+    "pseu":"",  #va a contener el nombre del usuario que esté activo en el sistema
+    "listaUsers":[]
+    }
+
+ejecucionActual["listaUsers"]=list(datos.keys()) #asigna a listaUsers una lista, que tiene como elementos todos los valores del diccionario "datos"
+
+
+nuevosUsuarios=open(r"nuevosUsuario.pkl","wb")  #si el archivo no existe lo crea
+usuariosPredefinidos=open(r"usuariosPredefinidos.csv","r")
+
+datosResultantes=mergePickleCsv(nuevosUsuarios,usuariosPredefinidos) #merge entre pickle y diccionario, a un unico diccionario llamado datos
+datos.update(datosResultantes)   #actuliza el diccionario resultante al diccionario datos
+
+nuevosUsuarios.close()
+usuariosPredefinidos.close()
+
+#despues de hacer cosas con los archivos llama a la funcion principal
 menuPrincipal()
+
+
+
+
+
+
 
